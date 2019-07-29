@@ -1,0 +1,17 @@
+version: '2'
+services:
+  app:
+    build: .
+    container_name: 'app'
+    environment:
+      - API_KEY
+
+  nginx:
+    container_name: 'nginx'
+    image: 'nginx'
+    depends_on:
+      - app
+    volumes:
+      - nginx:/etc/nginx:ro
+    ports:
+      - 80:80
