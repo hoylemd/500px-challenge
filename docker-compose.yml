@@ -6,7 +6,7 @@ services:
     environment:
       - API_KEY
     volumes:
-      - ./app:/app
+      - ./src:/app
 
   nginx:
     container_name: 'nginx'

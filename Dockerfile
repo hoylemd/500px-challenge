@@ -7,5 +7,4 @@ COPY src/templates/index.html /app/templates/
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["python", "app.py"]

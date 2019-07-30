@@ -8,6 +8,13 @@ then:
 
 $ http localhost
 
+# To Do
+
+- [ ] Design page
+- [ ] Request from popular
+- [ ] Handle pagination
+- [ ] Add Details page
+
 # Specification
 
 In this challenge we are asking for your help building a simple web application. The web app will be similar to our own site, and consume content from the 500px API (we will provide you with an API key and documentation).
