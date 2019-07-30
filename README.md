@@ -1,4 +1,15 @@
 # 500px-challenge
+
+to run:
+
+$ docker-compose up
+
+then:
+
+$ http localhost
+
+# Specification
+
 In this challenge we are asking for your help building a simple web application. The web app will be similar to our own site, and consume content from the 500px API (we will provide you with an API key and documentation).
 
 During the development of this web app, you may face different design or implementation choices. You’re free to make any such choices as you see fit; however, please make sure you document these decisions and include them in your code as either comments or in a summary included with your submission. We want to see how you think, what decisions you make, and why.

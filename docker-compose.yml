@@ -12,6 +12,6 @@ services:
     depends_on:
       - app
     volumes:
-      - nginx:/etc/nginx:ro
+      - ./nginx:/etc/nginx:ro
     ports:
       - 80:80
