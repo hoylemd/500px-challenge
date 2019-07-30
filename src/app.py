@@ -31,9 +31,10 @@ def index():
     raw = response.json()
     photos = raw['photos']
     context = {
-        'message': 'weeee',
-        'photos': photos
+        'photos': photos,
+        'n': len(photos)
     }
+
     return render_template('index.html', **context)
 
 

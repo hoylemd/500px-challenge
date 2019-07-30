@@ -1,15 +1,13 @@
 <html>
 <head></head>
 <body>
-  <h3>Hello, World</h3>
-
-  <p>{{ message }}</p>
+  <h3>The current most popular {{ n }} photos on 500px!</h3>
 
   {% for photo in photos %}
   <p class="photo">
     <h4>{{ photo.name }}</h4>
-    <img src="{{ photo['image_url'][0] }}" style="width: 150px; height: 150px;">
-    <span>By {{ photo.user.username }}</span>
+    <img src="{{ photo['image_url'][0] }}" style="max-height: 250px;">
+    <div>By: {{ photo.user.username }}</div>
   </p>
   {% endfor %}
 
