@@ -4,5 +4,14 @@
   <h3>Hello, World</h3>
 
   <p>{{ message }}</p>
+
+  {% for photo in photos %}
+  <p class="photo">
+    <h4>{{ photo.name }}</h4>
+    <img src="{{ photo['image_url'][0] }}" style="width: 150px; height: 150px;">
+    <span>By {{ photo.user.username }}</span>
+  </p>
+  {% endfor %}
+
 </body>
 </html>

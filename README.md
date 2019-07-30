@@ -11,7 +11,7 @@ $ http localhost
 # To Do
 
 - [ ] Design page
-- [ ] Request from popular
+- [x] Request from popular
 - [ ] Handle pagination
 - [ ] Add Details page
 
