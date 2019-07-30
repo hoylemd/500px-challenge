@@ -6,7 +6,7 @@ body {
 .photo_card {
   background-color: #DBF;
 
-  margin: 0.2t 5em;
+  margin: 0.25em;
   padding: 0.5em;
 
   display: inline-block;
@@ -31,4 +31,8 @@ body {
 .photo_card .thumbnail {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+}
+
+.pager .disabled {
+  font-color: #999999;
 }

@@ -13,5 +13,21 @@
   </div>
   {% endfor %}
 
+  <div class="pager">
+    {% if prev_link %}
+      <a class='pager-prev' href="{{ prev_link }}">&lt;-</a>
+    {% else %}
+      <a class='pager-prev disabled'>&lt;-</a>
+    {% endif %}
+
+    <span class='page_number'>{{ page }} / {{ pages }}</span>
+
+    {% if next_link %}
+      <a class='pager-next' href="{{ next_link }}">-&gt;</a>
+    {% else %}
+      <a class='pager-next disabled'>-&gt;</a>
+    {% endif %}
+  </div>
+
 </body>
 </html>
