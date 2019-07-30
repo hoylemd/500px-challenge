@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 def make_pager_url(rpp=None, page=None, total=None):
@@ -67,6 +67,15 @@ class FiveHundredPX:
 
         return response
 
+    def get_detail(self, id):
+        url = f"https://{self.host}/v1/photos/{id}"
+
+        logger.debug(f'Making GET request: {url}')
+        response = get(url, params={'consumer_key': self.key})
+        logger.debug(f' -> HTTP {response.status_code}')
+
+        return response
+
 
 @app.route('/')
 def index():
@@ -97,6 +106,19 @@ def index():
     }
 
     return render_template('index.html', **context)
+
+
+@app.route('/<int:photo_id>')
+def detail(photo_id):
+
+    api = FiveHundredPX()
+    raw = api.get_detail(photo_id).json()
+
+    context = {
+        'photo': raw['photo']
+    }
+
+    return render_template('detail.html', **context)
 
 
 if __name__ == '__main__':

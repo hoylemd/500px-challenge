@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/static/index.css"/>
+  </head>
+  <body>
+    <h3>{{ photo.name }}</h3>
+    <img class="full_size" src="{{ photo['images'][0]['https_url'] }}"/>
+    <div class="author">By: {{ photo.user.username }}</div>
+    <div class="description">{{ photo.description|safe }}</div>
+
+    <div class="community_link">
+    {% if photo.privacy %}
+      Sorry, no community link!
+    {% else %}
+      <a href="http://500px.com/photo/{{ photo.id }}">See on 500px Community</a>
+    {% endif %}
+    </div>
+  </body>
+</html>

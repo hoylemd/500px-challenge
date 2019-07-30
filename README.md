@@ -17,7 +17,7 @@ $ http localhost
 - [x] ask for only 20
 - [x] pagination queryparams
 - [x] page links
-- [ ] Add Details page
+- [x] Add Details page
 - [ ] Why does pagination not seem to work near the end?
 
 ## Specification
