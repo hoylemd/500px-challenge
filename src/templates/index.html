@@ -1,14 +1,16 @@
 <html>
-<head></head>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/static/index.css"/>
+  </head>
 <body>
   <h3>The current most popular {{ n }} photos on 500px!</h3>
 
   {% for photo in photos %}
-  <p class="photo">
-    <h4>{{ photo.name }}</h4>
-    <img src="{{ photo['image_url'][0] }}" style="max-height: 250px;">
+  <div class="photo_card">
+    <div class="author">{{ photo.name }}</div>
+    <img class="thumbnail" src="{{ photo['image_url'][0] }}">
     <div>By: {{ photo.user.username }}</div>
-  </p>
+  </div>
   {% endfor %}
 
 </body>

@@ -10,9 +10,13 @@ $ http localhost
 
 # To Do
 
-- [ ] Design page
+- [x] css file
+- [x] Design page
 - [x] Request from popular
 - [ ] Handle pagination
+- [ ] ask for only 20
+- [ ] pagination queryparams
+- [ ] page links
 - [ ] Add Details page
 
 # Specification

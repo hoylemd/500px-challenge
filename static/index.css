@@ -1,0 +1,34 @@
+body {
+  font-family: "helvetica";
+  font-height: 16px;
+}
+
+.photo_card {
+  background-color: #DBF;
+
+  margin: 0.2t 5em;
+  padding: 0.5em;
+
+  display: inline-block;
+  max-width: 300px;
+  max-height: 300px;
+  vertical-align: top;
+
+  border-radius: 0.25em;
+  border: 0.25em solid #B9D;
+
+}
+
+.photo_card .thumbnail {
+  max-height: 250px;
+  max-width: 250px;
+}
+
+.photo_card .author {
+  font-weight: 700;
+}
+
+.photo_card .thumbnail {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
