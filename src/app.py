@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 from os import environ
 from requests import get
 from flask import Flask, render_template, request
@@ -7,7 +8,7 @@ app = Flask(__name__)
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 def make_pager_url(rpp=None, page=None, total=None):
@@ -39,36 +40,48 @@ def prune_dict(obj):
     return {k: v for k, v in obj.items() if v is not None}
 
 
+@dataclass
+class FiveHundredPX:
+    key: str = None
+    host: str = 'api.500px.com'
+
+    def __post_init__(self):
+        if self.key is None:
+            self.key = environ['API_KEY']
+
+    def get_feed(self, feature='popular', rpp=None, page=None):
+        url = f"https://{self.host}/v1/photos"
+        params = prune_dict({
+            'feature': 'popular',
+            'consumer_key': self.key,
+            'rpp': rpp,
+            'page': page,
+        })
+
+        predicted_qs = '&'.join(
+            f"{k}={v}" for k, v in params.items() if k != 'consumer_key'
+        )
+        logger.debug(f'Making GET request: {url}?{predicted_qs}')
+        response = get(url, params=params)
+        logger.debug(f' -> HTTP {response.status_code}')
+
+        return response
+
+
 @app.route('/')
 def index():
-    logger.info('acquiring config')
-    api_key = environ.get('API_KEY', None)
-    api_host = environ.get('API_HOST', 'api.500px.com')
-
-    if api_key is None:
-        raise ValueError('no API key supplied')
-
     rpp = request.args.get('rpp', None)
     page = request.args.get('page', None)
-    logger.info(f"args acquired: rpp: {rpp}, page: {page})")
-    url = f"https://{api_host}/v1/photos"
-    params = prune_dict({
-        'feature': 'popular',
-        'consumer_key': api_key,
-        'rpp': rpp,
-        'page': page,
-    })
-    logger.info(f'params prepped: {params}, url: {url}')
 
-    response = get(url, params=params)
-    logger.info(f"--- GET {response.url}")
-
-    rpp = int(rpp or '50')
-    page = int(page or '1')
+    api = FiveHundredPX()
+    response = api.get_feed(rpp=rpp, page=page)
 
     raw = response.json()
     pages = raw['total_pages']
     photos = raw['photos']
+
+    rpp = int(rpp or '50')
+    page = int(page or '1')
 
     if page > pages:
         page = pages
@@ -83,7 +96,6 @@ def index():
         'next_link': make_pager_url(rpp=rpp, page=page + 1, total=pages)
     }
 
-    logger.info('rendering page...')
     return render_template('index.html', **context)
 
 
