@@ -11,11 +11,11 @@
 
   {% for photo in photos %}
   <div class="photo_card">
-    <div class="author">{{ photo.name }}</div>
+    <div>{{ photo.name }}</div>
     <a class='details_link' href="/{{ photo.id }}">
       <img class="thumbnail" src="{{ photo['images'][0]['https_url'] }}"/>
     </a>
-    <div>By: {{ photo.user.username }}</div>
+    <div class='author'>By: {{ photo.user.username }}</div>
   </div>
   {% endfor %}
 

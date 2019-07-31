@@ -18,6 +18,7 @@ $ http localhost
 - [x] pagination queryparams
 - [x] page links
 - [x] Add Details page
+- [ ] tests
 - [ ] Why does pagination not seem to work near the end?
 
 ## Specification

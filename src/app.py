@@ -79,7 +79,7 @@ class FiveHundredPX:
 
 @app.route('/')
 def index():
-    rpp = request.args.get('rpp', None)
+    rpp = int(request.args.get('rpp', 8))
     page = request.args.get('page', None)
 
     api = FiveHundredPX()
@@ -89,8 +89,7 @@ def index():
     pages = raw['total_pages']
     photos = raw['photos']
 
-    rpp = int(rpp or '50')
-    page = int(page or '1')
+    page = int(page or 1)
 
     if page > pages:
         page = pages
