@@ -1,7 +1,21 @@
+from utils import prune_dict
+
+
 class TestUtils:
     def test_prune_dict(self):
         """Should remove ONLY the 'None' fields, not falsy"""
-        pass
+        raw = {
+            'name': 'Darrow',
+            'colour': 'Red',
+            'fears': None,
+            'tears': 0
+        }
+
+        assert prune_dict(raw) == {
+            'name': 'Darrow',
+            'colour': 'Red',
+            'tears': 0
+        }
 
     def test_make_pager_url(self):
         """Should return a properly formatted pager url"""
