@@ -46,10 +46,7 @@ class FiveHundredPX:
         url = f"https://{self.host}/v1/photos/{id}"
 
         logger.debug(f'Making GET request: {url}')
-        response = get(
-            url,
-            params={'consumer_key': self.key, 'image_size': 22},
-        )
+        response = get(url, params={'consumer_key': self.key})
         logger.debug(f' -> HTTP {response.status_code}')
 
         return response

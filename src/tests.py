@@ -69,4 +69,11 @@ class TestFiveHundredPX:
 
     def test_get_detail(self):
         """Should construct request as expected"""
-        pass
+        api = FiveHundredPX(key='secret123', host='cheer.io')
+        with patch('five_hundred_px.get', status_code=200) as get_mock:
+            api.get_detail(10153)
+
+        get_mock.assert_called_with(
+            'https://cheer.io/v1/photos/10153',
+            params={'consumer_key': 'secret123'}
+        )
