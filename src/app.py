@@ -1,10 +1,8 @@
 import logging
-from dataclasses import dataclass
-from os import environ
-from requests import get
 from flask import Flask, render_template, request
 
-from utils import prune_dict, make_pager_url
+from utils import make_pager_url
+from five_hundred_px import FiveHundredPX
 
 app = Flask(__name__)
 
