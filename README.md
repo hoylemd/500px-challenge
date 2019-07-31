@@ -1,108 +1,63 @@
 # 500px-challenge
 
-to build:
+You'll need docker compose installed, and a .env file with the following:
+```
+API_KEY=<a 500px consumer key>
+```
 
+to build:
 $ docker-compose build
 
 to run:
-
 $ docker-compose up
-
-then:
-
-$ http localhost
+and then visit http://localhost in a browser
 
 to test:
-
 $ docker-compose run app pytest
 
-## To Do
+## Known issues/limitations
 
-- [x] css file
-- [x] Design page
-- [x] Request from popular
-- [x] Handle pagination
-- [x] ask for only 20
-- [x] pagination queryparams
-- [x] page links
-- [x] Add Details page
-- [ ] tests
-- [ ] Why does pagination not seem to work near the end?
+I couldn't figure out why, but the pagination gets weird when you get close to
+the final pages. For instance, if there are 407 pages (at a given `rpp` value),
+and you request page 410, you'll receive page 407. This isn't really a problem,
+as the alternative would just be an error. The weird part is when you start
+going *backward* from the end. So if you requested page 405, you still get page
+407 (or at least the same photos as on page 407). My first instinct was an
+off-by-one error, where the last page should actually be page 406 if there are
+407 pages, but as pages are 1-indexed on the 500px api, that shouldn't be the
+case. Untimately, I decided not to worry about it as the early pages work
+correctly and I didn't want to spend too much time on such a rare use case.
 
-## Specification
+I also ran into some trouble using the `photo_size` queryparam in the api. I
+would request a specific size code (3, 30, etc), but I'd only ever get
+size-code 22 urls in the `images` field of the response. I tried putting the
+size codes in arrays on Pawan's suggestion, but it didn't seem to have any
+effect.  To rectify this, I simply used css to re-scale the images on the main
+feed page to fit 8 of them on screen. In a real project, this would be at best
+a temporary stopgap. As the app is requesting the full-sized images every time
+it loads a feed page, page load time will be impacted, as well as using up a
+lot of extra bandwidth. Using the pre-set image sizes would also be more
+helpful on the layout of the page. I could use cropped square images as
+thumbnails, meaning that all thumbnails are the same size, so each 'card' could
+have identical dimensions. Instead, I used `max-width` and `max-height` styles
+to ensure the images fit on a card *roughly* 300px x 300px, which allowed 8 to
+fit nicely on my laptop screen.
 
-In this challenge we are asking for your help building a simple web
-application. The web app will be similar to our own site, and consume content
-from the 500px API (we will provide you with an API key and documentation).
+This implementation may also run a bit on the slower side, as the
+request-response exchange won't complete until the entire request/response sent
+to the 500px api completes. In practice, the 500px api is responsive enough
+that the additional response overhead is barely noticeable, and the page
+doesn't have anything useful to show to the user until that request is
+completed anyway, so making the API requests with ajax from a javascript
+application would only shift that 'delay' to after the single-page app has
+loaded.
 
-During the development of this web app, you may face different design or
-implementation choices. You’re free to make any such choices as you see fit;
-however, please make sure you document these decisions and include them in your
-code as either comments or in a summary included with your submission. We want
-to see how you think, what decisions you make, and why.
+## Design summary
 
-This challenge is designed for candidates to showcase their learning, problem
-solving, and programming skills. There is no strict time limit, but please let
-us know your estimation on how long this challenge will take.
-
-### Rules and Tools
-
-To build the web app, you are free to use the technology of your choice,
-although we’d recommend React as that is what we use here at 500px. We also
-make use of Backbone + Marionette, and Ruby on Rails, so those would also be
-good choices. It’s okay to use some third-party libraries or plugins (e.g. npm
-modules), but we might ask you the reasons behind your choices.
-
-You must check your solution into Github and maintain a communicative commit
-history so that we can follow the evolution of your solution. Also, please put
-your documentation in Github wiki pages or a README.md
-
-This challenge is not designed to be difficult, but the code you write should
-meet your own high standards. We value thoughtful, clean, concise and clear
-code.
-
-### Documentation
-
-All of 500px's API are [documentated on github](https://github.com/500px/legacy-api-documentation). Two you may want to look at are:
-
-- [Photo GET endpoint](https://github.com/500px/legacy-api-documentation/blob/master/endpoints/photo/GET_photos.md)
-
-- [Image Sizes and URLs](https://github.com/500px/legacy-api-documentation/blob/master/basics/formats_and_terms.md#image-urls-and-image-sizes)
-
-### Assessment
-
-Your solution will be assessed before an on-site interview. If you are invited
-for an interview, we’ll have some follow-up questions about why you designed
-and implemented your app the way you did, and ask questions about how your app
-might evolve in different situations.
-
-#### Task 1 - Photo Showcase
-
-Create a simple web app to showcase Popular photos from 500px. Specifically, it
-should show photos in our “Popular” feature dynamically obtained from the 500px
-API. The list should support pagination, allowing users to browse through
-multiple pages of content. Feel free to choose exactly how you’d like to
-present the photos based on your own intuition.
-
-#### Task 2 - Photo Details
-
-When user clicks on a photo on the grid, a full screen version of the photo
-should be displayed along with more detailed information about the photo, such
-as its title, description, and any other data you think might be useful to
-display.
-
-#### Task 3 - Cosmetics and Testing
-
-This task is fairly open - further polish your web application and show off
-some of your strengths. Some ideas include:
-
-- Use your CSS talent to beautify your UI; improve the style, add animations, etc.
-- Increase the reliability of your application by adding extensive test coverage
-
-Feel free to choose the direction you want take (or even do both if you have
-extra cycles). Use this opportunity to show us what you’re good at in addition
-to coding.
-
-Use this API consumer key in your app: REDACTED Please do NOT commit this key
-into public repo. Try to think of a way to import this key dynamically in local
-dev only.
+I chose to use Flask as my web framework as python is my strongest language by
+far, and the requirements didn't seem to require any more advanced
+functionality than simple request handling. I was able to make the app (almost)
+entirely stateless however, with no need for user accounts or any persisted
+data, it can be (almost) entirely functional in nature. The only 'state' that
+it needs is the API key and url to the api endpoint (which has a sensible
+default... the actual api url).
