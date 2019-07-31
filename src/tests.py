@@ -1,4 +1,4 @@
-from utils import prune_dict
+from utils import prune_dict, make_pager_url
 
 
 class TestUtils:
@@ -19,15 +19,11 @@ class TestUtils:
 
     def test_make_pager_url(self):
         """Should return a properly formatted pager url"""
-        pass
+        assert make_pager_url(5, 2, 7) == '/?rpp=5&page=2'
 
     def test_make_pager_url__invalid_page(self):
         """Should return None, indicating no url to which to link"""
-        pass
-
-    def test_make_pager_url__one_section(self):
-        """Should return a url with only one queryparam"""
-        pass
+        assert make_pager_url(5, 12, 7) is None
 
 
 class TestFiveHundredPX:

@@ -1,5 +1,9 @@
 # 500px-challenge
 
+to build:
+
+$ docker-compose build
+
 to run:
 
 $ docker-compose up
@@ -7,6 +11,10 @@ $ docker-compose up
 then:
 
 $ http localhost
+
+to test:
+
+$ docker-compose run app pytest
 
 ## To Do
 
