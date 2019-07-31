@@ -17,7 +17,12 @@ class FiveHundredPX:
 
     def __post_init__(self):
         if self.key is None:
-            self.key = environ['API_KEY']
+            try:
+                self.key = environ['API_KEY']
+            except KeyError as exc:
+                raise KeyError(
+                    'No `key` arg provided or `API_KEY` env var available.'
+                ) from exc
 
     def get_feed(self, feature='popular', rpp=None, page=None):
         url = f"https://{self.host}/v1/photos"
@@ -25,8 +30,7 @@ class FiveHundredPX:
             'feature': 'popular',
             'consumer_key': self.key,
             'rpp': rpp,
-            'page': page,
-            'image_size': 30,
+            'page': page
         })
 
         predicted_qs = '&'.join(

@@ -1,4 +1,8 @@
+import pytest
+from unittest.mock import patch
+
 from utils import prune_dict, make_pager_url
+from five_hundred_px import FiveHundredPX
 
 
 class TestUtils:
@@ -29,19 +33,39 @@ class TestUtils:
 class TestFiveHundredPX:
     def test_construct(self):
         """Should initialize with provided values"""
-        pass
+        api = FiveHundredPX(key='sesame', host='excels.io')
+        assert api.key == 'sesame'
+        assert api.host == 'excels.io'
 
-    def test_construct__from_env(self):
+    def test_construct__from_env(self, monkeypatch):
         """Should pull key from env"""
-        pass
+        monkeypatch.setenv('API_KEY', 'orion')
+        api = FiveHundredPX()
 
-    def test_construct__no_key(self):
+        assert api.key == 'orion'
+
+    def test_construct__no_key(self, monkeypatch):
         """Should raise an error"""
-        pass
+
+        monkeypatch.delenv('API_KEY')
+        with pytest.raises(KeyError):
+            FiveHundredPX()
 
     def test_get_feed(self):
         """Should construct request as expected"""
-        pass
+        api = FiveHundredPX(key='secret123', host='cheer.io')
+        with patch('five_hundred_px.get', status_code=200) as get_mock:
+            api.get_feed(rpp=7, page=2)
+
+        get_mock.assert_called_with(
+            'https://cheer.io/v1/photos',
+            params={
+                'feature': 'popular',
+                'consumer_key': 'secret123',
+                'rpp': 7,
+                'page': 2
+            }
+        )
 
     def test_get_detail(self):
         """Should construct request as expected"""
