@@ -9,12 +9,22 @@ services:
       - ./src:/app
       - ./static:/static
     stdin_open: true
+    tty: true
+
+  spa:
+    build: spa_src
+    container_name: 'spa'
+    environment:
+      - API_KEY
+    stdin_open: true
+    tty: true
 
   nginx:
     container_name: 'nginx'
     image: 'nginx'
     depends_on:
       - app
+      - spa
     volumes:
       - ./nginx:/etc/nginx:ro
       - ./static:/usr/share/nginx/static:ro
