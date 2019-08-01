@@ -1,8 +1,8 @@
 version: '3'
 services:
-  app:
+  bff:
     build: .
-    container_name: 'app'
+    container_name: 'bff'
     environment:
       - API_KEY
     volumes:
@@ -14,8 +14,9 @@ services:
   spa:
     build: spa_src
     container_name: 'spa'
-    environment:
-      - API_KEY
+    volumes:
+      - ./spa_src/src/:/app/src
+      - ./spa_src/public:/app/public
     stdin_open: true
     tty: true
 
@@ -23,7 +24,7 @@ services:
     container_name: 'nginx'
     image: 'nginx'
     depends_on:
-      - app
+      - bff
       - spa
     volumes:
       - ./nginx:/etc/nginx:ro
