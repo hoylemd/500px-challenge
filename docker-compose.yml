@@ -5,6 +5,7 @@ services:
     container_name: 'bff'
     environment:
       - API_KEY
+      - API_HOST
     volumes:
       - ./src:/app
       - ./static:/static

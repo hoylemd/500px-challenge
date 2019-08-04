@@ -1,3 +1,4 @@
+import os
 import logging
 from flask import Flask, request, jsonify
 
@@ -15,7 +16,8 @@ def index():
     rpp = int(request.args.get('rpp', 8))
     page = request.args.get('page', None)
 
-    api = FiveHundredPX()
+    api_host = os.environ.get('API_HOST', None)
+    api = FiveHundredPX(host=api_host)
     response = api.get_feed(rpp=rpp, page=page)
 
     raw = response.json()
@@ -26,7 +28,8 @@ def index():
 @app.route('/bff/<int:photo_id>')
 def detail(photo_id):
 
-    api = FiveHundredPX()
+    api_host = os.environ.get('API_HOST', None)
+    api = FiveHundredPX(host=api_host)
     raw = api.get_detail(photo_id).json()
 
     return jsonify(raw)
