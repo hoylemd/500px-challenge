@@ -20,14 +20,24 @@ services:
     stdin_open: true
     tty: true
 
+  api:
+    build: mock_api
+    container_name: 'api'
+    volumes:
+      - ./mock_api/:/app
+    stdin_open: true
+    tty: true
+
   nginx:
     container_name: 'nginx'
     image: 'nginx'
     depends_on:
       - bff
       - spa
+      - api
     volumes:
       - ./nginx:/etc/nginx:ro
       - ./static:/usr/share/nginx/static:ro
+      - ./mock_api/cache:/usr/share/nginx/content:ro
     ports:
       - 80:80
