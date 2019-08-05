@@ -18,6 +18,45 @@ class PhotoCard extends React.Component {
   }
 }
 
+class Pager extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render () {
+    let prevButton;
+    let nextButton;
+
+    if ((this.props.page - 1) > 0) {
+      prevButton = (
+        <button class='pager-prev' onClick={this.props.prevPage}>&lt;-</button>
+      )
+    } else {
+      prevButton = (
+        <button class='pager-prev disabled' disabled='true'>&lt;-</button>
+      )
+    }
+
+    if ((this.props.page) < this.props.pages) {
+      nextButton = (
+        <button class='pager-next' onClick={this.props.nextPage}>-&gt;</button>
+      )
+    } else {
+      nextButton = (
+        <button class='pager-next disabled' disabled='true'>-&gt;</button>
+      )
+    }
+
+    return (
+      <div class="pager">
+      {prevButton}
+      <span class='page_number'>{this.props.page} / {this.props.pages}</span>
+      {nextButton}
+      </div>
+    )
+  }
+}
+
 class PhotoPage extends React.Component {
   createCard(photo) {
     return (
@@ -62,12 +101,10 @@ class Showcase extends React.Component {
       pages: 1,
     }
 
-    this.getPhotos();
   }
 
-  getPhotos(rpp=8, page=1) {
-    let url = '/bff/?rpp=' + rpp + '&page=' + 1;
-
+  getPhotos(page) {
+    let url = '/bff/?rpp=' + this.state.rpp + '&page=' + page;
 
     window.fetch(url).then((response) => {
       return response.json();
@@ -78,24 +115,48 @@ class Showcase extends React.Component {
         pages: blob.total_pages
       });
     });
+  }
+
+  nextPage() {
+    let target = this.state.page + 1;
+    if (target > this.state.pages) {
+      return;
+    }
 
     this.setState({
-      photos: null,
-      rpp: rpp,
-      page: page
-    });
+      page: target,
+    })
+    this.getPhotos(target)
+  }
+
+  prevPage() {
+    let target = this.state.page - 1;
+    if (target < 1) {
+      return;
+    }
+
+    this.getPhotos(target)
   }
 
   render() {
     if (this.state.photos === null) {
+      this.getPhotos(1);
       return 'loading...';
     } else {
       return (
-        <PhotoPage
-          photos={this.state.photos}
-          page={this.state.page}
-          rpp={this.state.rpp}
-        />
+        <div class='showcase'>
+          <PhotoPage
+            photos={this.state.photos}
+            page={this.state.page}
+            rpp={this.state.rpp}
+          />
+          <Pager
+            page={this.state.page}
+            pages={this.state.pages}
+            nextPage={() => this.nextPage()}
+            prevPage={() => this.prevPage()}
+          />
+        </div>
       )
     }
   }
