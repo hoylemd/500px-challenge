@@ -16,6 +16,8 @@ def index():
     rpp = int(request.args.get('rpp', 8))
     page = request.args.get('page', None)
 
+    logger.debug(f'requesting list page {page} with rpp {rpp}')
+
     api_host = os.environ.get('API_HOST', None)
     api = FiveHundredPX(host=api_host)
     response = api.get_feed(rpp=rpp, page=page)

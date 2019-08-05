@@ -13,7 +13,7 @@ logger.setLevel(logging.DEBUG)
 @dataclass
 class FiveHundredPX:
     key: str = None
-    host: str = 'api.500px.com'
+    host: str = 'https://api.500px.com'
 
     def __post_init__(self):
         if self.key is None:
@@ -25,7 +25,7 @@ class FiveHundredPX:
                 ) from exc
 
     def get_feed(self, feature='popular', rpp=None, page=None):
-        url = f"https://{self.host}/v1/photos"
+        url = f"{self.host}/v1/photos"
         params = prune_dict({
             'feature': 'popular',
             'consumer_key': self.key,

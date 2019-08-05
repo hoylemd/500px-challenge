@@ -58,7 +58,8 @@ class Showcase extends React.Component {
     this.state = {
       photos: null,
       rpp: 8,
-      page: 1
+      page: 1,
+      pages: 1,
     }
 
     this.getPhotos();
@@ -68,13 +69,13 @@ class Showcase extends React.Component {
     let url = '/bff/?rpp=' + rpp + '&page=' + 1;
 
 
-    window.fetch('/bff/').then((response) => {
+    window.fetch(url).then((response) => {
       return response.json();
     }).then((blob) => {
       this.setState({
         photos: blob.photos,
-        page: blob.currentPage,
-        rpp: blob
+        page: blob.current_page,
+        pages: blob.total_pages
       });
     });
 
