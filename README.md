@@ -15,6 +15,8 @@ and then visit http://localhost in a browser
 to test:
 $ docker-compose run app pytest
 
+No js tests yet :(
+
 ## Known issues/limitations
 
 I couldn't figure out why, but the pagination gets weird when you get close to
@@ -61,3 +63,31 @@ entirely stateless however, with no need for user accounts or any persisted
 data, it can be (almost) entirely functional in nature. The only 'state' that
 it needs is the API key and url to the api endpoint (which has a sensible
 default... the actual api url).
+
+## React addendum
+
+Since my original submission, I worked on a Reactjs front-end a little bit.
+Partially to learn more abour reactjs, and partially because I was bored at my
+family's cottage.
+
+The first thing I did was create a simple mock api server (see the mock_api
+directory and 'api' container) so that I didn't have to overwhelm a hotspot's
+bandwith with hundreds of requests to the 500px API.  How it works is you run
+the `dl_mock.py` script, which downloads a snapshot of the 500px api at that
+moment, requesting 3 pages of 8. It also downloads the image files and details
+payloads for the first 24 images in the popular feed. Then, spinning up the
+container sets up a server that mocks the 500px api, rewriting relevant urls to
+ones that refer to the local api mock. The images themselves are served via the
+nginx container through it's `/content` route. To use the mock api instead of
+the real thing, add `API_HOST=http://api` to the .env file (same place the
+consumer key goes) This took me about 2 hours.
+
+Next, I set to developing the react app in earnest. I'd already spent about 30
+minutes getting a simple page of 8 photos working, so I decided to implement
+paging. you can see the code I came up with in the `spa_src/index.js` file. I
+didn't have a linter set up for javascript, unfortunately, so it's not my best
+work by a long shot, but it works. there isn't a way to choose an arbitrary
+page, but you can go back and forth easily.
+
+This is as far as I've gotten. Next up would be implementing the detail page
+view, followed by arbitrary paging and tests.
