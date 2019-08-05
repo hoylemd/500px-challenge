@@ -1,5 +1,4 @@
 import logging
-from os import environ
 from dataclasses import dataclass
 from requests import get
 
@@ -12,17 +11,8 @@ logger.setLevel(logging.DEBUG)
 
 @dataclass
 class FiveHundredPX:
-    key: str = None
-    host: str = 'https://api.500px.com'
-
-    def __post_init__(self):
-        if self.key is None:
-            try:
-                self.key = environ['API_KEY']
-            except KeyError as exc:
-                raise KeyError(
-                    'No `key` arg provided or `API_KEY` env var available.'
-                ) from exc
+    key: str
+    host: str
 
     def get_feed(self, feature='popular', rpp=None, page=None):
         url = f"{self.host}/v1/photos"
