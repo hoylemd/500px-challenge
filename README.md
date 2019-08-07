@@ -1,6 +1,7 @@
 # 500px-challenge
 
 You'll need docker compose installed, and a .env file with the following:
+
 ```
 API_KEY=<a 500px consumer key>
 ```
@@ -10,7 +11,7 @@ $ docker-compose build
 
 to run:
 $ docker-compose up
-and then visit http://localhost in a browser
+and then visit <http://localhost/> in a browser
 
 to test:
 $ docker-compose run app pytest
@@ -91,3 +92,10 @@ page, but you can go back and forth easily.
 
 This is as far as I've gotten. Next up would be implementing the detail page
 view, followed by arbitrary paging and tests.
+
+## Future improvements
+
+Beyond the requirements stated, I'd make the following changes:
+
+- productionize the servers. (e.g. gunicorn for the bff, compile the js to a minified bundle + serve by productionized nginx.)
+- add a testing container to do subcutaneous testing
